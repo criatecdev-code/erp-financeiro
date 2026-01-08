@@ -129,14 +129,18 @@ export default function ReportsPage() {
                     <p className="text-muted-foreground">Análise detalhada de despesas e fluxo de caixa.</p>
                 </div>
 
-                <div className="flex flex-col gap-4 w-full md:w-auto">
-                    <div className="flex flex-wrap items-center gap-3 bg-card p-3 rounded-2xl border shadow-sm">
+
+                {/* Actions & Filters */}
+                <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto items-end md:items-center">
+
+                    {/* Filter Bar */}
+                    <div className="flex flex-wrap items-center gap-3 bg-card p-2 rounded-2xl border shadow-sm">
 
                         {/* Date Type Filter */}
-                        <div className="flex items-center gap-2 border-r pr-3">
-                            <span className="text-xs font-bold text-muted-foreground uppercase">Filtrar Por</span>
+                        <div className="flex items-center gap-2 border-r pr-3 pl-2">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase">Filtrar</span>
                             <select
-                                className="bg-transparent text-sm font-semibold outline-none cursor-pointer"
+                                className="bg-transparent text-sm font-semibold outline-none cursor-pointer text-foreground"
                                 value={filters.dateType}
                                 onChange={e => setFilters({ ...filters, dateType: e.target.value })}
                             >
@@ -147,18 +151,18 @@ export default function ReportsPage() {
 
                         {/* Month Filter */}
                         <div className="flex items-center gap-2 border-r pr-3">
-                            <span className="text-xs font-bold text-muted-foreground uppercase">Mês</span>
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase">Mês</span>
                             <input
                                 type="month"
-                                className="bg-transparent text-sm font-semibold outline-none"
+                                className="bg-transparent text-sm font-semibold outline-none text-foreground"
                                 value={filters.month}
                                 onChange={e => setFilters({ ...filters, month: e.target.value, startDate: '', endDate: '' })}
                             />
                         </div>
 
-                        {/* Category Filter */}
+                        {/* Dropdowns */}
                         <select
-                            className="bg-transparent text-sm font-medium outline-none max-w-[120px]"
+                            className="bg-transparent text-sm font-medium outline-none max-w-[140px] text-foreground"
                             value={filters.categoryId}
                             onChange={e => setFilters({ ...filters, categoryId: e.target.value })}
                         >
@@ -166,9 +170,8 @@ export default function ReportsPage() {
                             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                         </select>
 
-                        {/* Unit Filter */}
                         <select
-                            className="bg-transparent text-sm font-medium outline-none max-w-[120px]"
+                            className="bg-transparent text-sm font-medium outline-none max-w-[140px] text-foreground"
                             value={filters.unitId}
                             onChange={e => setFilters({ ...filters, unitId: e.target.value })}
                         >
@@ -178,159 +181,156 @@ export default function ReportsPage() {
 
                         <button
                             onClick={loadReport}
-                            className="bg-primary text-primary-foreground p-2 rounded-lg hover:opacity-90 transition-all"
+                            className="bg-primary text-primary-foreground p-2 rounded-xl hover:opacity-90 transition-all shadow-sm"
                             title="Aplicar Filtros"
                         >
                             <Filter className="w-4 h-4" />
                         </button>
                     </div>
 
-                    {/* Advanced Date Range Toggle (Optional - kept simple for now) */}
-                    {(filters.startDate || filters.endDate) && (
-                        <div className="flex items-center gap-2 text-xs bg-muted/50 p-2 rounded-lg self-end">
-                            <span>Período Personalizado Ativo</span>
-                            <button onClick={() => setFilters({ ...filters, startDate: '', endDate: '' })}><X className="w-3 h-3" /></button>
-                        </div>
-                    )}
+                    {/* Export Button */}
                     <button
                         onClick={handleExport}
-                        className="bg-green-600 text-white p-2 rounded-lg hover:bg-green-700 transition-all flex items-center gap-2"
-                        title="Exportar Excel"
+                        className="bg-green-600 text-white px-5 py-2.5 rounded-2xl hover:bg-green-700 transition-all shadow-lg hover:shadow-green-500/20 active:translate-y-[1px] flex items-center gap-2 font-bold"
+                        title="Exportar para Excel"
                     >
-                        <Download className="w-4 h-4" /> <span className="text-xs font-bold hidden md:inline">Exportar</span>
+                        <Download className="w-5 h-5" />
+                        <span>Exportar</span>
                     </button>
-                </div>
-            </header>
 
-            {loading ? (
-                <div className="flex flex-col items-center justify-center py-32 gap-4" >
-                    <Loader2 className="w-10 h-10 animate-spin text-primary" />
-                    <p className="text-muted-foreground font-medium animate-pulse">Gerando relatórios...</p>
                 </div>
-            ) : (
-                <>
-                    {/* Summary Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[
-                            { label: 'Total no Período', value: data.total, icon: DollarSign, color: 'text-blue-600', bg: 'bg-blue-500/10' },
-                            { label: 'Total Pago', value: data?.byStatus?.paid, icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
-                            { label: 'Total Pendente', value: data?.byStatus?.pending, icon: AlertCircle, color: 'text-amber-600', bg: 'bg-amber-500/10' },
-                            { label: 'Total Vencido', value: data?.byStatus?.overdue, icon: TrendingDown, color: 'text-red-600', bg: 'bg-red-500/10' },
-                        ].map((stat, i) => (
-                            <div key={i} className="bg-card p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className={cn("p-2 rounded-xl", stat.bg)}>
-                                        <stat.icon className={cn("w-5 h-5", stat.color)} />
+            </header >
+
+            {
+                loading ? (
+                    <div className="flex flex-col items-center justify-center py-32 gap-4" >
+                        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+                        <p className="text-muted-foreground font-medium animate-pulse">Gerando relatórios...</p>
+                    </div>
+                ) : (
+                    <>
+                        {/* Summary Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {[
+                                { label: 'Total no Período', value: data.total, icon: DollarSign, color: 'text-blue-600', bg: 'bg-blue-500/10' },
+                                { label: 'Total Pago', value: data?.byStatus?.paid, icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
+                                { label: 'Total Pendente', value: data?.byStatus?.pending, icon: AlertCircle, color: 'text-amber-600', bg: 'bg-amber-500/10' },
+                                { label: 'Total Vencido', value: data?.byStatus?.overdue, icon: TrendingDown, color: 'text-red-600', bg: 'bg-red-500/10' },
+                            ].map((stat, i) => (
+                                <div key={i} className="bg-card p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div className={cn("p-2 rounded-xl", stat.bg)}>
+                                            <stat.icon className={cn("w-5 h-5", stat.color)} />
+                                        </div>
+                                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{stat.label}</span>
                                     </div>
-                                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{stat.label}</span>
+                                    <div className={cn("text-2xl font-black tracking-tight", stat.color)}>
+                                        {formatCurrency(stat.value)}
+                                    </div>
                                 </div>
-                                <div className={cn("text-2xl font-black tracking-tight", stat.color)}>
-                                    {formatCurrency(stat.value)}
+                            ))}
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            {/* By Category Bar Chart */}
+                            <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-primary/10 rounded-lg"><Tag className="w-5 h-5 text-primary" /></div>
+                                    <h3 className="font-bold text-lg">Despesas por Categoria</h3>
+                                </div>
+                                <div className="h-[300px] w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={data.byCategory}>
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
+                                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} tickFormatter={(val) => `R$ ${val}`} />
+                                            <Tooltip
+                                                cursor={{ fill: '#f3f4f6' }}
+                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                                formatter={(val: any) => [formatCurrency(val), 'Total']}
+                                            />
+                                            <Bar dataKey="value" fill="#0ea5e9" radius={[4, 4, 0, 0]} barSize={40} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
                                 </div>
                             </div>
-                        ))}
-                    </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* By Category Bar Chart */}
-                        <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-primary/10 rounded-lg"><Tag className="w-5 h-5 text-primary" /></div>
-                                <h3 className="font-bold text-lg">Despesas por Categoria</h3>
+                            {/* Status Pie Chart */}
+                            <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-primary/10 rounded-lg"><CheckCircle className="w-5 h-5 text-primary" /></div>
+                                    <h3 className="font-bold text-lg">Distribuição de Status</h3>
+                                </div>
+                                <div className="h-[300px] w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <PieChart>
+                                            <Pie
+                                                data={pieData}
+                                                innerRadius={80}
+                                                outerRadius={100}
+                                                paddingAngle={5}
+                                                dataKey="value"
+                                            >
+                                                {pieData.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip
+                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                                formatter={(val: any) => formatCurrency(val)}
+                                            />
+                                            <Legend verticalAlign="bottom" height={36} />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                </div>
                             </div>
-                            <div className="h-[300px] w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={data.byCategory}>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
-                                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} tickFormatter={(val) => `R$ ${val}`} />
-                                        <Tooltip
-                                            cursor={{ fill: '#f3f4f6' }}
-                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                                            formatter={(val: any) => [formatCurrency(val), 'Total']}
-                                        />
-                                        <Bar dataKey="value" fill="#0ea5e9" radius={[4, 4, 0, 0]} barSize={40} />
-                                    </BarChart>
-                                </ResponsiveContainer>
+
+                            {/* By Supplier Bar Chart */}
+                            <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-primary/10 rounded-lg"><UsersIcon className="w-5 h-5 text-primary" /></div>
+                                    <h3 className="font-bold text-lg">Maiores Fornecedores</h3>
+                                </div>
+                                <div className="h-[300px] w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={data.bySupplier} layout="vertical">
+                                            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e5e7eb" />
+                                            <XAxis type="number" hide />
+                                            <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#6b7280' }} width={100} />
+                                            <Tooltip
+                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                                formatter={(val: any) => formatCurrency(val)}
+                                            />
+                                            <Bar dataKey="value" fill="#8b5cf6" radius={[0, 4, 4, 0]} barSize={25} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+
+                            {/* By Unit Bar Chart */}
+                            <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-primary/10 rounded-lg"><Building className="w-5 h-5 text-primary" /></div>
+                                    <h3 className="font-bold text-lg">Despesas por Unidade</h3>
+                                </div>
+                                <div className="h-[300px] w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={data.byUnit}>
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
+                                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
+                                            <Tooltip
+                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                                formatter={(val: any) => formatCurrency(val)}
+                                            />
+                                            <Bar dataKey="value" fill="#ec4899" radius={[4, 4, 0, 0]} barSize={40} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
                             </div>
                         </div>
-
-                        {/* Status Pie Chart */}
-                        <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-primary/10 rounded-lg"><CheckCircle className="w-5 h-5 text-primary" /></div>
-                                <h3 className="font-bold text-lg">Distribuição de Status</h3>
-                            </div>
-                            <div className="h-[300px] w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <PieChart>
-                                        <Pie
-                                            data={pieData}
-                                            innerRadius={80}
-                                            outerRadius={100}
-                                            paddingAngle={5}
-                                            dataKey="value"
-                                        >
-                                            {pieData.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={entry.color} />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip
-                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                                            formatter={(val: any) => formatCurrency(val)}
-                                        />
-                                        <Legend verticalAlign="bottom" height={36} />
-                                    </PieChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-
-                        {/* By Supplier Bar Chart */}
-                        <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-primary/10 rounded-lg"><UsersIcon className="w-5 h-5 text-primary" /></div>
-                                <h3 className="font-bold text-lg">Maiores Fornecedores</h3>
-                            </div>
-                            <div className="h-[300px] w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={data.bySupplier} layout="vertical">
-                                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e5e7eb" />
-                                        <XAxis type="number" hide />
-                                        <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#6b7280' }} width={100} />
-                                        <Tooltip
-                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                                            formatter={(val: any) => formatCurrency(val)}
-                                        />
-                                        <Bar dataKey="value" fill="#8b5cf6" radius={[0, 4, 4, 0]} barSize={25} />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-
-                        {/* By Unit Bar Chart */}
-                        <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-primary/10 rounded-lg"><Building className="w-5 h-5 text-primary" /></div>
-                                <h3 className="font-bold text-lg">Despesas por Unidade</h3>
-                            </div>
-                            <div className="h-[300px] w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={data.byUnit}>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
-                                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
-                                        <Tooltip
-                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                                            formatter={(val: any) => formatCurrency(val)}
-                                        />
-                                        <Bar dataKey="value" fill="#ec4899" radius={[4, 4, 0, 0]} barSize={40} />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-                    </div>
-                </>
-            )
+                    </>
+                )
             }
         </div >
     );
