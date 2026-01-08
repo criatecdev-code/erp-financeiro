@@ -137,6 +137,7 @@ export default function ReportsPage() {
                     <div className="flex flex-wrap items-center gap-3 bg-card p-2 rounded-2xl border shadow-sm">
 
                         {/* Date Type Filter */}
+                        {/* Filter Type */}
                         <div className="flex items-center gap-2 border-r pr-3 pl-2 relative">
                             <span className="text-[10px] font-bold text-muted-foreground uppercase">Filtrar</span>
                             <div className="relative">
@@ -162,6 +163,20 @@ export default function ReportsPage() {
                                     className="bg-muted/30 text-sm font-semibold outline-none text-foreground pl-7 pr-2 py-1 rounded-md border border-transparent hover:border-border transition-all cursor-pointer"
                                     value={filters.month}
                                     onChange={e => setFilters({ ...filters, month: e.target.value, startDate: '', endDate: '' })}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Day Filter */}
+                        <div className="flex items-center gap-2 border-r pr-3 relative group">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase">Dia</span>
+                            <div className="relative flex items-center">
+                                <Calendar className="w-3.5 h-3.5 absolute left-2 text-muted-foreground pointer-events-none" />
+                                <input
+                                    type="date"
+                                    className="bg-muted/30 text-sm font-semibold outline-none text-foreground pl-7 pr-2 py-1 rounded-md border border-transparent hover:border-border transition-all cursor-pointer"
+                                    value={filters.startDate === filters.endDate ? filters.startDate : ''}
+                                    onChange={e => setFilters({ ...filters, month: '', startDate: e.target.value, endDate: e.target.value })}
                                 />
                             </div>
                         </div>
