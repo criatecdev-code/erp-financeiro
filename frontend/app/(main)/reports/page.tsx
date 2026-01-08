@@ -228,13 +228,14 @@ export default function ReportsPage() {
                                 { label: 'Total Pago', value: data?.byStatus?.paid, icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
                                 { label: 'Total Pendente', value: data?.byStatus?.pending, icon: AlertCircle, color: 'text-amber-600', bg: 'bg-amber-500/10' },
                                 { label: 'Total Vencido', value: data?.byStatus?.overdue, icon: TrendingDown, color: 'text-red-600', bg: 'bg-red-500/10' },
+
                             ].map((stat, i) => (
                                 <div key={i} className="bg-card dark:bg-[#1e293b] p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all">
                                     <div className="flex items-center justify-between mb-4">
                                         <div className={cn("p-2 rounded-xl", stat.bg)}>
                                             <stat.icon className={cn("w-5 h-5", stat.color)} />
                                         </div>
-                                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{stat.label}</span>
+                                        <span className="text-xs font-bold text-muted-foreground dark:text-gray-300 uppercase tracking-wider">{stat.label}</span>
                                     </div>
                                     <div className={cn("text-2xl font-black tracking-tight", stat.color)}>
                                         {formatCurrency(stat.value)}
@@ -248,7 +249,7 @@ export default function ReportsPage() {
                             <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><Tag className="w-5 h-5 text-primary" /></div>
-                                    <h3 className="font-bold text-lg">Despesas por Categoria</h3>
+                                    <h3 className="font-bold text-lg dark:text-white">Despesas por Categoria</h3>
                                 </div>
                                 <div className="h-[300px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
@@ -272,7 +273,7 @@ export default function ReportsPage() {
                             <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><CheckCircle className="w-5 h-5 text-primary" /></div>
-                                    <h3 className="font-bold text-lg">Distribuição de Status</h3>
+                                    <h3 className="font-bold text-lg dark:text-white">Distribuição de Status</h3>
                                 </div>
                                 <div className="h-[300px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
@@ -295,7 +296,7 @@ export default function ReportsPage() {
                                                 itemStyle={{ color: '#f8fafc' }}
                                                 formatter={(val: any) => formatCurrency(val)}
                                             />
-                                            <Legend verticalAlign="bottom" height={36} formatter={(value) => <span className="text-gray-500 dark:text-gray-400 font-medium">{value}</span>} />
+                                            <Legend verticalAlign="bottom" height={36} formatter={(value) => <span className="text-gray-500 dark:text-white font-medium">{value}</span>} />
                                         </PieChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -305,12 +306,12 @@ export default function ReportsPage() {
                             <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><UsersIcon className="w-5 h-5 text-primary" /></div>
-                                    <h3 className="font-bold text-lg">Maiores Fornecedores</h3>
+                                    <h3 className="font-bold text-lg dark:text-white">Maiores Fornecedores</h3>
                                 </div>
                                 <div className="h-[300px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={data.bySupplier} layout="vertical">
-                                            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#374151" strokeOpacity={0.2} />
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" strokeOpacity={0.2} />
                                             <XAxis type="number" hide />
                                             <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#6b7280' }} width={100} />
                                             <Tooltip
@@ -329,7 +330,7 @@ export default function ReportsPage() {
                             <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><Building className="w-5 h-5 text-primary" /></div>
-                                    <h3 className="font-bold text-lg">Despesas por Unidade</h3>
+                                    <h3 className="font-bold text-lg dark:text-white">Despesas por Unidade</h3>
                                 </div>
                                 <div className="h-[300px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
