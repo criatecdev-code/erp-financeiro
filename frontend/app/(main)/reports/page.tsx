@@ -10,7 +10,7 @@ import {
 import {
     Calendar, Download, Filter, TrendingDown,
     CheckCircle, AlertCircle, DollarSign, Building,
-    Tag, Users as UsersIcon, Loader2, X
+    Tag, Users as UsersIcon, Loader2, X, ChevronDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -137,47 +137,59 @@ export default function ReportsPage() {
                     <div className="flex flex-wrap items-center gap-3 bg-card p-2 rounded-2xl border shadow-sm">
 
                         {/* Date Type Filter */}
-                        <div className="flex items-center gap-2 border-r pr-3 pl-2">
+                        <div className="flex items-center gap-2 border-r pr-3 pl-2 relative">
                             <span className="text-[10px] font-bold text-muted-foreground uppercase">Filtrar</span>
-                            <select
-                                className="bg-transparent text-sm font-semibold outline-none cursor-pointer text-foreground"
-                                value={filters.dateType}
-                                onChange={e => setFilters({ ...filters, dateType: e.target.value })}
-                            >
-                                <option value="due_date">Vencimento</option>
-                                <option value="created_at">Lançamento</option>
-                            </select>
+                            <div className="relative">
+                                <select
+                                    className="bg-transparent text-sm font-semibold outline-none cursor-pointer text-foreground appearance-none pr-6 pl-1 z-10 relative"
+                                    value={filters.dateType}
+                                    onChange={e => setFilters({ ...filters, dateType: e.target.value })}
+                                >
+                                    <option value="due_date">Vencimento</option>
+                                    <option value="created_at">Lançamento</option>
+                                </select>
+                                <ChevronDown className="w-3 h-3 absolute right-0 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                            </div>
                         </div>
 
                         {/* Month Filter */}
-                        <div className="flex items-center gap-2 border-r pr-3">
+                        <div className="flex items-center gap-2 border-r pr-3 relative group">
                             <span className="text-[10px] font-bold text-muted-foreground uppercase">Mês</span>
-                            <input
-                                type="month"
-                                className="bg-transparent text-sm font-semibold outline-none text-foreground"
-                                value={filters.month}
-                                onChange={e => setFilters({ ...filters, month: e.target.value, startDate: '', endDate: '' })}
-                            />
+                            <div className="relative flex items-center">
+                                <Calendar className="w-3.5 h-3.5 absolute left-2 text-muted-foreground pointer-events-none" />
+                                <input
+                                    type="month"
+                                    className="bg-muted/30 text-sm font-semibold outline-none text-foreground pl-7 pr-2 py-1 rounded-md border border-transparent hover:border-border transition-all cursor-pointer"
+                                    value={filters.month}
+                                    onChange={e => setFilters({ ...filters, month: e.target.value, startDate: '', endDate: '' })}
+                                />
+                            </div>
                         </div>
 
                         {/* Dropdowns */}
-                        <select
-                            className="bg-transparent text-sm font-medium outline-none max-w-[140px] text-foreground"
-                            value={filters.categoryId}
-                            onChange={e => setFilters({ ...filters, categoryId: e.target.value })}
-                        >
-                            <option value="">Todas Categorias</option>
-                            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                        </select>
+                        <div className="relative">
+                            <select
+                                className="bg-transparent text-sm font-medium outline-none max-w-[140px] text-foreground appearance-none pr-6 pl-2 py-1 hover:bg-muted/50 rounded-lg transition-colors cursor-pointer"
+                                value={filters.categoryId}
+                                onChange={e => setFilters({ ...filters, categoryId: e.target.value })}
+                            >
+                                <option value="">Todas Categorias</option>
+                                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                            </select>
+                            <ChevronDown className="w-3 h-3 absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                        </div>
 
-                        <select
-                            className="bg-transparent text-sm font-medium outline-none max-w-[140px] text-foreground"
-                            value={filters.unitId}
-                            onChange={e => setFilters({ ...filters, unitId: e.target.value })}
-                        >
-                            <option value="">Todas Unidades</option>
-                            {units.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
-                        </select>
+                        <div className="relative">
+                            <select
+                                className="bg-transparent text-sm font-medium outline-none max-w-[140px] text-foreground appearance-none pr-6 pl-2 py-1 hover:bg-muted/50 rounded-lg transition-colors cursor-pointer"
+                                value={filters.unitId}
+                                onChange={e => setFilters({ ...filters, unitId: e.target.value })}
+                            >
+                                <option value="">Todas Unidades</option>
+                                {units.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+                            </select>
+                            <ChevronDown className="w-3 h-3 absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                        </div>
 
                         <button
                             onClick={loadReport}
@@ -217,7 +229,7 @@ export default function ReportsPage() {
                                 { label: 'Total Pendente', value: data?.byStatus?.pending, icon: AlertCircle, color: 'text-amber-600', bg: 'bg-amber-500/10' },
                                 { label: 'Total Vencido', value: data?.byStatus?.overdue, icon: TrendingDown, color: 'text-red-600', bg: 'bg-red-500/10' },
                             ].map((stat, i) => (
-                                <div key={i} className="bg-card p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all">
+                                <div key={i} className="bg-card dark:bg-[#1e293b] p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all">
                                     <div className="flex items-center justify-between mb-4">
                                         <div className={cn("p-2 rounded-xl", stat.bg)}>
                                             <stat.icon className={cn("w-5 h-5", stat.color)} />
@@ -233,7 +245,7 @@ export default function ReportsPage() {
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             {/* By Category Bar Chart */}
-                            <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
+                            <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><Tag className="w-5 h-5 text-primary" /></div>
                                     <h3 className="font-bold text-lg">Despesas por Categoria</h3>
@@ -286,7 +298,7 @@ export default function ReportsPage() {
                             </div>
 
                             {/* By Supplier Bar Chart */}
-                            <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
+                            <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><UsersIcon className="w-5 h-5 text-primary" /></div>
                                     <h3 className="font-bold text-lg">Maiores Fornecedores</h3>
@@ -308,7 +320,7 @@ export default function ReportsPage() {
                             </div>
 
                             {/* By Unit Bar Chart */}
-                            <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
+                            <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><Building className="w-5 h-5 text-primary" /></div>
                                     <h3 className="font-bold text-lg">Despesas por Unidade</h3>

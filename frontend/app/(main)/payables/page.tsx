@@ -29,6 +29,9 @@ export default function PayablesPage() {
     });
     const [tenants, setTenants] = useState<any[]>([]);
 
+    const [payingId, setPayingId] = useState<string | null>(null);
+    const [paymentDate, setPaymentDate] = useState(new Date().toISOString().slice(0, 10));
+
     useEffect(() => {
         loadData();
     }, []);
@@ -68,9 +71,7 @@ export default function PayablesPage() {
                 })
             });
             setShowForm(false);
-            setShowForm(false);
             setFormData({ supplier_id: '', category_id: '', unit_id: '', amount: '', due_date: '', document_number: '', notes: '', companyId: '' });
-            loadData();
             loadData();
         } catch (err: any) {
             alert(err.message || 'Falha ao criar lançamento');
@@ -78,12 +79,18 @@ export default function PayablesPage() {
     };
 
     const handleMarkAsPaid = async (id: string) => {
-        if (!confirm('Deseja marcar esta conta como paga?')) return;
+        setPayingId(id);
+        setPaymentDate(new Date().toISOString().slice(0, 10));
+    };
+
+    const confirmPayment = async () => {
+        if (!payingId) return;
         try {
-            await fetchApi(`/payables/${id}/pay`, {
+            await fetchApi(`/payables/${payingId}/pay`, {
                 method: 'PATCH',
-                body: JSON.stringify({ payment_date: new Date() })
+                body: JSON.stringify({ payment_date: paymentDate })
             });
+            setPayingId(null);
             loadData();
         } catch (err) {
             alert('Falha ao atualizar status');
@@ -139,6 +146,33 @@ export default function PayablesPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Payment Date Modal */}
+            {payingId && (
+                <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-card border shadow-2xl rounded-2xl w-full max-w-sm animate-in zoom-in-95 duration-200">
+                        <div className="p-6 space-y-4">
+                            <div className="flex justify-between items-center">
+                                <h3 className="text-lg font-bold">Data do Pagamento</h3>
+                                <button onClick={() => setPayingId(null)}><X className="w-5 h-5" /></button>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-muted-foreground">Informe a data que foi pago:</label>
+                                <input
+                                    type="date"
+                                    value={paymentDate}
+                                    onChange={e => setPaymentDate(e.target.value)}
+                                    className="w-full border rounded-xl p-3 bg-background font-semibold"
+                                />
+                            </div>
+                            <div className="flex gap-2 pt-2">
+                                <button onClick={() => setPayingId(null)} className="flex-1 px-4 py-2 hover:bg-muted rounded-xl font-medium transition-colors">Cancelar</button>
+                                <button onClick={confirmPayment} className="flex-1 bg-green-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg hover:bg-green-700 transition-colors">Confirmar Pagamento</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Form Modal / Overlay */}
             {showForm && (
