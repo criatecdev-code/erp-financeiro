@@ -253,12 +253,13 @@ export default function ReportsPage() {
                                 <div className="h-[300px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={data.byCategory}>
-                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" strokeOpacity={0.2} />
                                             <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
                                             <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} tickFormatter={(val) => `R$ ${val}`} />
                                             <Tooltip
-                                                cursor={{ fill: '#f3f4f6' }}
-                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                                cursor={{ fill: 'transparent' }}
+                                                contentStyle={{ backgroundColor: '#1e293b', borderRadius: '12px', border: '1px solid #334155', color: '#f8fafc', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' }}
+                                                itemStyle={{ color: '#f8fafc' }}
                                                 formatter={(val: any) => [formatCurrency(val), 'Total']}
                                             />
                                             <Bar dataKey="value" fill="#0ea5e9" radius={[4, 4, 0, 0]} barSize={40} />
@@ -268,7 +269,7 @@ export default function ReportsPage() {
                             </div>
 
                             {/* Status Pie Chart */}
-                            <div className="bg-card p-8 rounded-2xl border shadow-sm space-y-6">
+                            <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><CheckCircle className="w-5 h-5 text-primary" /></div>
                                     <h3 className="font-bold text-lg">Distribuição de Status</h3>
@@ -282,16 +283,19 @@ export default function ReportsPage() {
                                                 outerRadius={100}
                                                 paddingAngle={5}
                                                 dataKey="value"
+                                                stroke="none"
                                             >
                                                 {pieData.map((entry, index) => (
                                                     <Cell key={`cell-${index}`} fill={entry.color} />
                                                 ))}
                                             </Pie>
                                             <Tooltip
-                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                                cursor={{ fill: 'transparent' }}
+                                                contentStyle={{ backgroundColor: '#1e293b', borderRadius: '12px', border: '1px solid #334155', color: '#f8fafc', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' }}
+                                                itemStyle={{ color: '#f8fafc' }}
                                                 formatter={(val: any) => formatCurrency(val)}
                                             />
-                                            <Legend verticalAlign="bottom" height={36} />
+                                            <Legend verticalAlign="bottom" height={36} formatter={(value) => <span className="text-gray-500 dark:text-gray-400 font-medium">{value}</span>} />
                                         </PieChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -306,11 +310,13 @@ export default function ReportsPage() {
                                 <div className="h-[300px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={data.bySupplier} layout="vertical">
-                                            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e5e7eb" />
+                                            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#374151" strokeOpacity={0.2} />
                                             <XAxis type="number" hide />
                                             <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#6b7280' }} width={100} />
                                             <Tooltip
-                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                                cursor={{ fill: 'transparent' }}
+                                                contentStyle={{ backgroundColor: '#1e293b', borderRadius: '12px', border: '1px solid #334155', color: '#f8fafc', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' }}
+                                                itemStyle={{ color: '#f8fafc' }}
                                                 formatter={(val: any) => formatCurrency(val)}
                                             />
                                             <Bar dataKey="value" fill="#8b5cf6" radius={[0, 4, 4, 0]} barSize={25} />
@@ -328,11 +334,13 @@ export default function ReportsPage() {
                                 <div className="h-[300px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={data.byUnit}>
-                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" strokeOpacity={0.2} />
                                             <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
                                             <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
                                             <Tooltip
-                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                                cursor={{ fill: 'transparent' }}
+                                                contentStyle={{ backgroundColor: '#1e293b', borderRadius: '12px', border: '1px solid #334155', color: '#f8fafc', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' }}
+                                                itemStyle={{ color: '#f8fafc' }}
                                                 formatter={(val: any) => formatCurrency(val)}
                                             />
                                             <Bar dataKey="value" fill="#ec4899" radius={[4, 4, 0, 0]} barSize={40} />
