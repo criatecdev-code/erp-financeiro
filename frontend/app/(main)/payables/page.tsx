@@ -270,7 +270,10 @@ export default function PayablesPage() {
                                     return (
                                         <tr key={p.id} className="hover:bg-muted/30 transition-colors group">
                                             <td className="px-6 py-4 font-semibold text-foreground">
-                                                {new Date(p.due_date).toLocaleDateString('pt-BR')}
+                                                <div className="flex flex-col">
+                                                    <span>{new Date(p.due_date).toLocaleDateString('pt-BR')}</span>
+                                                    {isPaid && <span className="text-[10px] text-green-600 font-normal">Pago em: {new Date(p.payment_date).toLocaleDateString('pt-BR')}</span>}
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4 font-medium">{p.suppliers?.name || '---'}</td>
                                             <td className="px-6 py-4">

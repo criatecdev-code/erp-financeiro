@@ -128,7 +128,13 @@ export const ReportController = {
                     companies!inner (id, name)
                 `);
 
-            if (!context.company_id) return res.json({});
+            if (!context.company_id) {
+                return res.json({
+                    byCategory: [], bySupplier: [], byUnit: [],
+                    byStatus: { paid: 0, pending: 0, overdue: 0 },
+                    total: 0
+                });
+            }
             query = query.eq('company_id', context.company_id);
 
             if (startDate) query = query.gte(filterDateCol, startDate);

@@ -70,7 +70,8 @@ export default function ReportsPage() {
             if (filters.companyId) queryParams.append('companyId', filters.companyId);
             if (filters.dateType) queryParams.append('dateType', filters.dateType);
 
-            const res = await fetch(`http://localhost:3001/api/reports/export?${queryParams.toString()}`, {
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === 'production' ? 'https://erp-financeiro-rose.vercel.app/api' : 'http://localhost:3001/api');
+            const res = await fetch(`${baseUrl}/reports/export?${queryParams.toString()}`, {
                 headers: {
                     'Authorization': `Bearer ${session.access_token}`
                 }
@@ -191,11 +192,18 @@ export default function ReportsPage() {
                             <button onClick={() => setFilters({ ...filters, startDate: '', endDate: '' })}><X className="w-3 h-3" /></button>
                         </div>
                     )}
+                    <button
+                        onClick={handleExport}
+                        className="bg-green-600 text-white p-2 rounded-lg hover:bg-green-700 transition-all flex items-center gap-2"
+                        title="Exportar Excel"
+                    >
+                        <Download className="w-4 h-4" /> <span className="text-xs font-bold hidden md:inline">Exportar</span>
+                    </button>
                 </div>
             </header>
 
             {loading ? (
-                <div className="flex flex-col items-center justify-center py-32 gap-4">
+                <div className="flex flex-col items-center justify-center py-32 gap-4" >
                     <Loader2 className="w-10 h-10 animate-spin text-primary" />
                     <p className="text-muted-foreground font-medium animate-pulse">Gerando relatórios...</p>
                 </div>
@@ -205,9 +213,9 @@ export default function ReportsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
                             { label: 'Total no Período', value: data.total, icon: DollarSign, color: 'text-blue-600', bg: 'bg-blue-500/10' },
-                            { label: 'Total Pago', value: data.byStatus.paid, icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
-                            { label: 'Total Pendente', value: data.byStatus.pending, icon: AlertCircle, color: 'text-amber-600', bg: 'bg-amber-500/10' },
-                            { label: 'Total Vencido', value: data.byStatus.overdue, icon: TrendingDown, color: 'text-red-600', bg: 'bg-red-500/10' },
+                            { label: 'Total Pago', value: data?.byStatus?.paid, icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
+                            { label: 'Total Pendente', value: data?.byStatus?.pending, icon: AlertCircle, color: 'text-amber-600', bg: 'bg-amber-500/10' },
+                            { label: 'Total Vencido', value: data?.byStatus?.overdue, icon: TrendingDown, color: 'text-red-600', bg: 'bg-red-500/10' },
                         ].map((stat, i) => (
                             <div key={i} className="bg-card p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all">
                                 <div className="flex items-center justify-between mb-4">
@@ -322,7 +330,8 @@ export default function ReportsPage() {
                         </div>
                     </div>
                 </>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 }
