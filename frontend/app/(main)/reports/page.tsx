@@ -245,7 +245,7 @@ export default function ReportsPage() {
                                 { label: 'Total Vencido', value: data?.byStatus?.overdue, icon: TrendingDown, color: 'text-red-600', bg: 'bg-red-500/10' },
 
                             ].map((stat, i) => (
-                                <div key={i} className="bg-card dark:bg-[#1e293b] p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all">
+                                <div key={i} className="bg-card dark:bg-background dark:border-white/20 p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all">
                                     <div className="flex items-center justify-between mb-4">
                                         <div className={cn("p-2 rounded-xl", stat.bg)}>
                                             <stat.icon className={cn("w-5 h-5", stat.color)} />
@@ -261,7 +261,7 @@ export default function ReportsPage() {
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             {/* By Category Bar Chart */}
-                            <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
+                            <div className="bg-card dark:bg-background dark:border-white/20 p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><Tag className="w-5 h-5 text-primary" /></div>
                                     <h3 className="font-bold text-lg dark:text-white">Despesas por Categoria</h3>
@@ -285,7 +285,7 @@ export default function ReportsPage() {
                             </div>
 
                             {/* Status Pie Chart */}
-                            <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
+                            <div className="bg-card dark:bg-background dark:border-white/20 p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><CheckCircle className="w-5 h-5 text-primary" /></div>
                                     <h3 className="font-bold text-lg dark:text-white">Distribuição de Status</h3>
@@ -318,7 +318,7 @@ export default function ReportsPage() {
                             </div>
 
                             {/* By Supplier Bar Chart */}
-                            <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
+                            <div className="bg-card dark:bg-background dark:border-white/20 p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><UsersIcon className="w-5 h-5 text-primary" /></div>
                                     <h3 className="font-bold text-lg dark:text-white">Maiores Fornecedores</h3>
@@ -342,7 +342,7 @@ export default function ReportsPage() {
                             </div>
 
                             {/* By Unit Bar Chart */}
-                            <div className="bg-card dark:bg-[#1e293b] p-8 rounded-2xl border shadow-sm space-y-6">
+                            <div className="bg-card dark:bg-background dark:border-white/20 p-8 rounded-2xl border shadow-sm space-y-6">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg"><Building className="w-5 h-5 text-primary" /></div>
                                     <h3 className="font-bold text-lg dark:text-white">Despesas por Unidade</h3>
