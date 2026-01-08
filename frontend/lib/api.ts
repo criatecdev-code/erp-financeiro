@@ -21,7 +21,8 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
         ...options.headers,
     };
 
-    const res = await fetch(`http://localhost:3001/api${endpoint}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === 'production' ? 'https://erp-financeiro-rose.vercel.app/api' : 'http://localhost:3001/api');
+    const res = await fetch(`${baseUrl}${endpoint}`, {
         ...options,
         headers,
     });
@@ -41,7 +42,8 @@ export async function fetchPublicApi(endpoint: string, options: RequestInit = {}
         ...options.headers,
     };
 
-    const res = await fetch(`http://localhost:3001/api${endpoint}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === 'production' ? 'https://erp-financeiro-rose.vercel.app/api' : 'http://localhost:3001/api');
+    const res = await fetch(`${baseUrl}${endpoint}`, {
         ...options,
         headers,
     });
