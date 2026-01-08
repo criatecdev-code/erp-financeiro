@@ -38,12 +38,9 @@ export const EmailService = {
         } catch (err) {
             console.error('Falha ao enviar e-mail:', err);
         }
-    }
-};
+    },
 
-export const startAlertService = () => {
-    // Scheduler: Roda todo dia às 08:00 AM
-    cron.schedule('0 8 * * *', async () => {
+    async runDailyCheck() {
         console.log('--- Iniciando Verificação de Vencimentos (Email & WhatsApp) ---');
 
         const today = new Date().toISOString().split('T')[0];
@@ -61,6 +58,8 @@ export const startAlertService = () => {
             return;
         }
 
+        if (!accounts) return;
+
         for (const acc of accounts) {
             // Busca usuários admins da empresa para notificar
             const { data: users } = await supabaseAdmin
@@ -73,13 +72,13 @@ export const startAlertService = () => {
                 for (const user of users) {
                     await EmailService.sendOverdueAlert(
                         user.email,
-                        acc.description,
+                        acc.description || 'Conta sem descrição',
                         acc.amount,
                         acc.due_date
                     );
 
                     if (user.phone) {
-                        const message = `*⚠️ Alerta de Vencimento - ContaCerta*\n\nOlá ${user.name || 'Admin'},\n\nIdentificamos uma conta próxima do vencimento:\n\n📌 *Conta:* ${acc.description}\n💰 *Valor:* R$ ${acc.amount.toFixed(2)}\n📅 *Vencimento:* ${new Date(acc.due_date).toLocaleDateString('pt-BR')}\n\nAcesse o sistema para regularizar: ${process.env.FRONTEND_URL}/payables`;
+                        const message = `*⚠️ Alerta de Vencimento - ContaCerta*\n\nOlá ${user.name || 'Admin'},\n\nIdentificamos uma conta próxima do vencimento:\n\n📌 *Conta:* ${acc.description || 'Conta sem descrição'}\n💰 *Valor:* R$ ${acc.amount.toFixed(2)}\n📅 *Vencimento:* ${new Date(acc.due_date).toLocaleDateString('pt-BR')}\n\nAcesse o sistema para regularizar: ${process.env.FRONTEND_URL}/payables`;
                         await WhatsAppService.sendMessage(user.phone, message);
                     }
                 }
@@ -87,6 +86,14 @@ export const startAlertService = () => {
         }
 
         console.log('--- Verificação de Vencimentos Finalizada ---');
+    }
+};
+
+export const startAlertService = () => {
+    // Scheduler: Roda todo dia às 08:00 AM
+    // Scheduler: Roda todo dia às 08:00 AM
+    cron.schedule('0 8 * * *', async () => {
+        await EmailService.runDailyCheck();
     }, {
         timezone: "America/Sao_Paulo"
     });
