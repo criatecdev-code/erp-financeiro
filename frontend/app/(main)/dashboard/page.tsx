@@ -165,6 +165,7 @@ export default function Dashboard() {
                             <tr>
                                 <th className="px-6 py-4 font-medium">Fornecedor</th>
                                 <th className="px-6 py-4 font-medium">Vencimento</th>
+                                <th className="px-6 py-4 font-medium">Pagamento</th>
                                 <th className="px-6 py-4 font-medium">Categoria</th>
                                 <th className="px-6 py-4 font-medium text-right">Valor</th>
                                 <th className="px-6 py-4 font-medium text-center">Status</th>
@@ -173,7 +174,7 @@ export default function Dashboard() {
                         <tbody className="divide-y">
                             {recent.length === 0 && (
                                 <tr>
-                                    <td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">
+                                    <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground">
                                         Nenhum lançamento recente encontrado.
                                     </td>
                                 </tr>
@@ -185,6 +186,9 @@ export default function Dashboard() {
                                     <tr key={i} className="hover:bg-muted/50 transition-colors">
                                         <td className="px-6 py-4 font-medium">{row.suppliers?.name || '---'}</td>
                                         <td className="px-6 py-4">{new Date(row.due_date).toLocaleDateString('pt-BR')}</td>
+                                        <td className="px-6 py-4 text-muted-foreground">
+                                            {isPaid ? new Date(row.payment_date).toLocaleDateString('pt-BR') : '-'}
+                                        </td>
                                         <td className="px-6 py-4">
                                             <span className="px-2 py-1 rounded-md bg-muted text-xs font-semibold">{row.expense_categories?.name || 'Geral'}</span>
                                         </td>
